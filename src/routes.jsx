@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import Login from './pages/Login/Login';
 import OTP from './pages/OTP/OTP';
 import Home from './pages/HomePage/Home';
+import RestaurentDetail from './pages/RestaurentDetail/RestaurentDetail';
 
 const AppRoutes = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -25,6 +26,8 @@ const AppRoutes = () => {
             <Home /> 
           }
         />
+        <Route path="/restaurant-details" element={<RestaurentDetail />} />
+
       </Routes>
     </Router>
   );

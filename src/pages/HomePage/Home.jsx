@@ -8,18 +8,19 @@ import Percentage from "../../assets/percentage.png";
 import Wallet from "../../assets/wallet.png";
 import ArrowForwardIosOutlinedIcon from "@mui/icons-material/ArrowForwardIosOutlined";
 import CardSliderItem from "../../components/CardSliderItem/CardSliderItem";
-import DemoImage from "../../assets/Mystry.jpg";
 import ArrowBackIosOutlinedIcon from "@mui/icons-material/ArrowBackIosOutlined";
 import { Carousel } from "react-responsive-carousel";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
-import Demo2 from "../../assets/Harry Potter and the Sorcerer's Stone.jpg";
 import AdditionalCard from "../../components/RestaurentCard/RestaurentCard";
 import { getRestaurantsByCityId } from "../../apis/api";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const authResponseString = localStorage.getItem("authResponse");
   const user = JSON.parse(authResponseString);
   const [restaurants, setRestaurants] = useState([]);
+  const navigate = useNavigate();
+
   useEffect(() => {
     fetchRestaurants();
   }, []);
@@ -34,7 +35,7 @@ const Home = () => {
       console.error("Error fetching restaurants:", error);
     }
   };
-  console.log(restaurants);
+  
   const InvertedTriangleIcon = (props) => (
     <SvgIcon
       {...props}
@@ -61,7 +62,8 @@ const Home = () => {
  
   const canScrollLeft = sliderPosition < 0;
   const canScrollRight = sliderPosition > -(restaurants.length - 1) * 375;
-
+ 
+  
 
   return (
     <Paper
@@ -357,15 +359,23 @@ const Home = () => {
         </Typography>
       </div>
       {restaurants.map((restaurant, index) => (
-        <AdditionalCard
-          key={index}
-          image={restaurant.images?.[0]?.url}
-          title={restaurant.restaurant_name}
-          keywords={["Cakes", "Pastry", "Pastas"]}
-          location={restaurant.location || "Unknown Location"}
-          rating={restaurant.rating?.restaurant_avg_rating}
-          price={restaurant.avg_cost_for_two}
-        />
+     <AdditionalCard
+     key={index}
+     image={restaurant.images?.[0]?.url}
+     title={restaurant.restaurant_name}
+     keywords={["Cakes", "Pastry", "Pastas"]}
+     location={restaurant.location || "Unknown Location"}
+     rating={restaurant.rating?.restaurant_avg_rating}
+     price={restaurant.avg_cost_for_two}
+     restaurantDetails={{
+       image: restaurant.images?.[0]?.url,
+       title: restaurant.restaurant_name,
+       keywords: ["Cakes", "Pastry", "Pastas"],
+       location: restaurant.location || "Unknown Location",
+       rating: restaurant.rating?.restaurant_avg_rating,
+       price: restaurant.avg_cost_for_two,
+     }}
+   />
       ))}
     </Paper>
   );
