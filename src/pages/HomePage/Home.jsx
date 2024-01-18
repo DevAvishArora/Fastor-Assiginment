@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
 import { Paper, Typography, IconButton, SvgIcon } from "@mui/material";
 import SquareIcon from "@mui/icons-material/Square";
 import CircleIcon from "@mui/icons-material/Circle";
@@ -19,7 +18,6 @@ const Home = () => {
   const authResponseString = localStorage.getItem("authResponse");
   const user = JSON.parse(authResponseString);
   const [restaurants, setRestaurants] = useState([]);
-  const navigate = useNavigate();
 
   useEffect(() => {
     fetchRestaurants();

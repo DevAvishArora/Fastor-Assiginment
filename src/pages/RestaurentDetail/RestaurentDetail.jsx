@@ -1,25 +1,61 @@
-import React from "react";
+import React, { useState } from "react";
 import { IconButton, Paper, Typography } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import DemoImage from "../../assets/Harry Potter and the Sorcerer's Stone.jpg";
 import StarIcon from "../../assets/Star.png";
 import DiscountIcon from "../../assets/teenyicons_discount-outline.png";
 import KeyboardArrowLeftIcon from "@mui/icons-material/KeyboardArrowLeft";
+import FastorLogo from "../../assets/Fastor-7-1.png";
+import ShareIcon from "@mui/icons-material/Share";
 const RestaurantDetails = () => {
-    const location = useLocation();
-    const queryParams = new URLSearchParams(location.search);
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
 
-    const title = queryParams.get("title");
-    const image = queryParams.get("image");
-    const locationDetails = queryParams?.get("location");
-    const rating = queryParams.get("rating");
-    const price = queryParams.get("price");
+  const title = queryParams.get("title");
+  const image = queryParams.get("image");
+  const locationDetails = queryParams?.get("location");
+  const rating = queryParams.get("rating");
+  const price = queryParams.get("price");
 
-    
   const navigate = useNavigate();
   const handleBack = () => {
     navigate("/home");
   };
+
+  const handleShare = async (image, title) => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: "Check out this restaurant!",
+          text: title,
+          url: image,
+        });
+      } else {
+        console.log("Web Share API not supported in this browser.");
+      }
+    } catch (error) {
+      console.error("Error sharing:", error);
+    }
+  };
+
+  const [logoPosition, setLogoPosition] = useState({ x: 50, y: 100 });
+
+  const handleLogoDrag = (event) => {
+    console.log("Event",event);
+    setLogoPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
+  const handleDrop = (event) => {
+    event.preventDefault();
+
+    setLogoPosition({
+      x: event.clientX,
+      y: event.clientY,
+    });
+  };
+
   return (
     <Paper
       elevation={3}
@@ -34,13 +70,15 @@ const RestaurantDetails = () => {
         position: "relative",
       }}
     >
-      {/* Top Half: Image */}
       <div
         style={{
           width: "100%",
           height: "50%",
           overflow: "hidden",
+          position: "relative",
         }}
+        onDrop={handleDrop}
+        onDragOver={(event) => event.preventDefault()}
       >
         <IconButton
           style={{
@@ -53,6 +91,17 @@ const RestaurantDetails = () => {
         >
           <KeyboardArrowLeftIcon style={{ color: "black" }} />
         </IconButton>
+        <IconButton
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            color: "white",
+          }}
+          onClick={() => handleShare(image, title)}
+        >
+          <ShareIcon style={{ color: "white" }} />
+        </IconButton>
         <img
           src={image}
           alt="Restaurant"
@@ -62,8 +111,27 @@ const RestaurantDetails = () => {
             objectFit: "cover",
           }}
         />
+        <div
+          draggable="true"
+          onDrag={handleLogoDrag}
+          style={{
+            position: "absolute",
+            top: `${logoPosition.y}px`,
+            left: `${logoPosition.x}px`,
+            zIndex: 2,
+          }}
+        >
+          <img
+            src={FastorLogo}
+            alt="Fastor Logo"
+            style={{
+              width: "250px",
+              height: "80px",
+              opacity: "0.5",
+            }}
+          />
+        </div>
       </div>
-
       <div
         style={{
           width: "100%",
