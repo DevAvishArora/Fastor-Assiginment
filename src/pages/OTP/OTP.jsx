@@ -36,6 +36,8 @@ const OTP = ({ isAuthenticated, setIsAuthenticated }) => {
       const response = await verifyOtpAndLogin(mobileNumber, otpValue);
   
       if (response.status === "Success") {
+        localStorage.setItem("authResponse", JSON.stringify(response.data));
+  
         setIsAuthenticated(true);
         navigate('/home');
       } else {
@@ -48,6 +50,7 @@ const OTP = ({ isAuthenticated, setIsAuthenticated }) => {
       setLoading(false);
     }
   };
+  
 
   const handleResendClick = () => {
     console.log("Resend clicked");

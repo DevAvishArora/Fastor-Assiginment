@@ -40,3 +40,19 @@ export const verifyOtpAndLogin = async (phoneNumber, otp) => {
   
     return response.json();
   };
+
+  export const getRestaurantsByCityId = async (cityId, authToken) => {
+    const apiUrl = `https://staging.fastor.in/v1/m/restaurant?city_id=${cityId}`;
+    const response = await fetch(apiUrl, {
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+        "Content-Type": "application/json",
+      },
+    });
+  
+    if (!response.ok) {
+      throw new Error("API request failed");
+    }
+  
+    return response.json();
+  };

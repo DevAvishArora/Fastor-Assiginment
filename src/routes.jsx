@@ -22,7 +22,7 @@ const AppRoutes = () => {
         <Route
           path="/home"
           element={
-            isAuthenticated ? <Home /> : <Navigate to="/" replace />
+            <Home /> 
           }
         />
       </Routes>
